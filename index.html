@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Toynexx — Anime Toy Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0C0C0C;
+    --light:#D7E2EA;
+    --grad-top:#646973;
+    --grad-bot:#BBCCD7;
+    --accent1:#18011F;
+    --accent2:#B600A8;
+    --accent3:#7621B0;
+    --accent4:#BE4C00;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--bg);}
+  body{font-family:'Kanit',sans-serif;color:var(--light);overflow-x:clip;}
+  img{display:block;max-width:100%;}
+  .wrap{overflow-x:clip;}
+
+  .hero-heading{
+    background: linear-gradient(180deg, var(--grad-top) 0%, var(--grad-bot) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    color:transparent;
+  }
+
+  /* ---------- fade in ---------- */
+  .fade{opacity:0;transform:translateY(30px);transition:opacity .7s cubic-bezier(.25,.1,.25,1), transform .7s cubic-bezier(.25,.1,.25,1);}
+  .fade.up{transform:translateY(40px);}
+  .fade.left{transform:translateX(-80px);}
+  .fade.right{transform:translateX(80px);}
+  .fade.in{opacity:1;transform:translate(0,0);}
+
+  /* ---------- buttons ---------- */
+  .btn-contact{
+    display:inline-flex;align-items:center;justify-content:center;
+    border-radius:999px;
+    background:linear-gradient(123deg, var(--accent1) 7%, var(--accent2) 37%, var(--accent3) 72%, var(--accent4) 100%);
+    box-shadow:0px 4px 4px rgba(181,1,167,.25), 4px 4px 12px #7721B1 inset;
+    outline:2px solid #fff; outline-offset:-3px;
+    color:#fff;font-weight:500;text-transform:uppercase;letter-spacing:.15em;
+    padding:14px 40px;font-size:.95rem;text-decoration:none;cursor:pointer;border:none;
+    transition:opacity .2s ease;
+  }
+  .btn-contact:hover{opacity:.85;}
+
+  .btn-ghost{
+    display:inline-flex;align-items:center;justify-content:center;
+    border-radius:999px;border:2px solid var(--light);color:var(--light);
+    font-weight:500;text-transform:uppercase;letter-spacing:.15em;
+    padding:12px 32px;font-size:.9rem;text-decoration:none;cursor:pointer;background:transparent;
+    transition:background .2s ease;white-space:nowrap;
+  }
+  .btn-ghost:hover{background:rgba(215,226,234,.1);}
+
+  /* ---------- navbar ---------- */
+  nav{
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;
+    padding:24px 24px 0; gap:12px;
+  }
+  nav a{
+    color:var(--light);text-transform:uppercase;letter-spacing:.1em;font-weight:500;
+    text-decoration:none;font-size:.85rem;transition:opacity .2s ease;
+  }
+  nav a:hover{opacity:.7;}
+  @media(min-width:768px){ nav{padding:32px 40px 0;} nav a{font-size:1.1rem;} }
+  @media(min-width:1024px){ nav a{font-size:1.3rem;} }
+
+  /* ---------- hero ---------- */
+  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:space-between;position:relative;padding-bottom:0;}
+  .hero-mid{position:relative;flex:1;display:flex;align-items:flex-start;overflow:hidden;padding-top:24px;}
+  .hero-heading-el{
+    font-weight:900;text-transform:uppercase;letter-spacing:-.02em;line-height:.85;
+    white-space:nowrap;width:100%;
+    font-size:16vw;
+  }
+  @media(min-width:640px){ .hero-heading-el{font-size:15vw;} }
+  @media(min-width:768px){ .hero-heading-el{font-size:15.5vw;} }
+
+  .hero-portrait-holder{
+    position:absolute;left:50%;transform:translate(-50%,-50%);top:58%;z-index:2;
+    width:260px;
+  }
+  @media(min-width:640px){ .hero-portrait-holder{width:340px;top:auto;bottom:0;transform:translateX(-50%);} }
+  @media(min-width:768px){ .hero-portrait-holder{width:420px;} }
+  @media(min-width:1024px){ .hero-portrait-holder{width:480px;} }
+
+  .hero-bottom{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    padding:0 24px 28px; gap:16px; position:relative; z-index:3;
+  }
+  @media(min-width:768px){ .hero-bottom{padding:0 40px 40px;} }
+  .hero-tagline{
+    color:var(--light);font-weight:300;text-transform:uppercase;letter-spacing:.05em;line-height:1.3;
+    font-size:clamp(.75rem,1.4vw,1.5rem); max-width:200px;
+  }
+
+  /* hero illustration */
+  .portrait-art{width:100%;filter:drop-shadow(0 20px 40px rgba(182,0,168,.25));}
+
+  /* ---------- marquee ---------- */
+  .marquee-section{padding:96px 0 40px;overflow:hidden;}
+  .m-row{display:flex;gap:12px;will-change:transform;margin-bottom:12px;}
+  .m-tile{
+    width:280px;height:180px;flex:none;border-radius:20px;
+    display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
+  }
+  @media(min-width:768px){ .m-tile{width:340px;height:220px;} }
+  .m-tile svg{width:38%;height:38%;opacity:.9;}
+
+  /* ---------- about ---------- */
+  .about{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;position:relative;padding:80px 20px;gap:56px;}
+  .about-heading{font-weight:900;text-transform:uppercase;line-height:.9;letter-spacing:-.02em;
+    font-size:clamp(3rem,12vw,160px);}
+  .about-textblock{display:flex;flex-direction:column;align-items:center;gap:56px;}
+  .about-p{max-width:560px;font-weight:500;font-size:clamp(1rem,2vw,1.35rem);line-height:1.6;}
+  .about-p span{opacity:.2;transition:opacity .05s linear;}
+  .deco{position:absolute;opacity:.9;}
+  .deco svg{width:100%;height:100%;}
+  .deco.tl{top:4%;left:2%;width:110px;}
+  .deco.bl{bottom:8%;left:4%;width:90px;}
+  .deco.tr{top:4%;right:2%;width:110px;}
+  .deco.br{bottom:8%;right:4%;width:120px;}
+  @media(min-width:768px){
+    .deco.tl{width:170px;left:4%;} .deco.bl{width:140px;left:9%;}
+    .deco.tr{width:170px;right:4%;} .deco.br{width:170px;right:9%;}
+  }
+
+  /* ---------- services ---------- */
+  .services{background:#fff;color:var(--bg);border-radius:50px 50px 0 0;padding:80px 20px;}
+  @media(min-width:768px){ .services{border-radius:60px 60px 0 0;padding:100px 40px;} }
+  .services-heading{font-weight:900;text-transform:uppercase;text-align:center;line-height:.9;
+    font-size:clamp(3rem,12vw,160px);margin-bottom:70px;}
+  .service-list{max-width:1000px;margin:0 auto;}
+  .service-item{
+    display:flex;align-items:center;gap:24px;padding:36px 0;
+    border-bottom:1px solid rgba(12,12,12,.15);
+  }
+  .service-item:first-child{border-top:1px solid rgba(12,12,12,.15);}
+  .service-num{font-weight:900;font-size:clamp(3rem,10vw,120px);flex:none;width:110px;}
+  @media(min-width:640px){ .service-num{width:160px;} }
+  .service-name{font-weight:500;text-transform:uppercase;font-size:clamp(1rem,2.2vw,2.1rem);margin-bottom:6px;}
+  .service-desc{font-weight:300;line-height:1.6;font-size:clamp(.85rem,1.6vw,1.15rem);opacity:.6;max-width:640px;}
+
+  /* ---------- projects / collections ---------- */
+  .collections{background:var(--bg);border-radius:50px 50px 0 0;margin-top:-40px;position:relative;z-index:10;
+    padding:80px 20px 40px;}
+  @media(min-width:768px){ .collections{border-radius:60px 60px 0 0;padding:110px 40px 60px;} }
+  .collections-heading{font-weight:900;text-transform:uppercase;text-align:center;line-height:.9;
+    font-size:clamp(3rem,12vw,160px);margin-bottom:60px;}
+  .stack{max-width:1100px;margin:0 auto;}
+  .card-sticky{position:sticky;top:70px;height:85vh;display:flex;align-items:flex-start;}
+  .card{
+    width:100%;border:2px solid var(--light);border-radius:40px;background:var(--bg);
+    padding:20px;transform-origin:top center;transition:transform .1s linear;
+  }
+  @media(min-width:768px){ .card{border-radius:50px;padding:32px;} }
+  .card-top{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:20px;}
+  .card-num{font-weight:900;font-size:clamp(2.5rem,7vw,90px);}
+  .card-meta{flex:1;min-width:160px;}
+  .card-cat{font-size:.8rem;text-transform:uppercase;letter-spacing:.15em;opacity:.6;}
+  .card-name{font-size:clamp(1.3rem,3vw,2.4rem);font-weight:600;text-transform:uppercase;}
+  .card-grid{display:flex;gap:12px;}
+  .card-col1{width:40%;display:flex;flex-direction:column;gap:12px;}
+  .card-col2{width:60%;}
+  .card-img{border-radius:28px;width:100%;object-fit:cover;}
+  @media(min-width:768px){ .card-img{border-radius:40px;} }
+  .ph-img{border-radius:28px;width:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+  @media(min-width:768px){ .ph-img{border-radius:40px;} }
+  .ph1{height:clamp(110px,15vw,190px);}
+  .ph2{height:clamp(150px,20vw,290px);}
+  .ph3{height:clamp(280px,38vw,420px);}
+
+  footer{text-align:center;color:var(--light);opacity:.4;font-size:.8rem;padding:40px 20px 60px;text-transform:uppercase;letter-spacing:.1em;}
+
+.hero-characters{
+
+position:absolute;
+left:0;
+top:0;
+width:100%;
+height:100%;
+pointer-events:none;
+
+}
+
+.char{
+
+position:absolute;
+width:220px;
+animation:float 4s ease-in-out infinite;
+filter:drop-shadow(0 20px 30px rgba(0,0,0,.4));
+
+}
+
+.batman{
+
+left:2%;
+top:12%;
+
+}
+
+.ironman{
+
+left:10%;
+bottom:10%;
+
+}
+
+.captain{
+
+left:22%;
+top:48%;
+
+}
+
+.superman{
+
+left:30%;
+bottom:2%;
+
+}
+
+.goku{
+
+right:6%;
+top:15%;
+
+}
+
+.luffy{
+
+right:18%;
+bottom:8%;
+
+}
+
+.tanjiro{
+
+right:28%;
+top:50%;
+
+}
+
+.titan{
+
+right:1%;
+top:2%;
+
+}
+
+@keyframes float{
+
+0%{
+
+transform:translateY(0);
+
+}
+
+50%{
+
+transform:translateY(-20px);
+
+}
+
+100%{
+
+transform:translateY(0);
+
+}
+
+}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <nav>
+      <a href="#about">About</a>
+      <a href="#offer">Shop</a>
+      <a href="#collections">Collections</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="hero-mid">
+      <div class="fade up" style="width:100%;overflow:hidden;" id="heroHeadingWrap">
+        <h1 class="hero-heading hero-heading-el">Toynexx</h1>
+      </div>
+
+   <div class="hero-characters">
+
+    <img src="images/batman.png" class="char batman">
+    <img src="images/ironman.png" class="char ironman">
+    <img src="images/captain.png" class="char captain">
+    <img src="images/superman.png" class="char superman">
+
+    <img src="images/goku.png" class="char goku">
+    <img src="images/luffy.png" class="char luffy">
+    <img src="images/tanjiro.png" class="char tanjiro">
+    <img src="images/titan.png" class="char titan">
+
+</div>
+
+          <!-- back hair mass -->
+          <path d="M60 130 C50 60 100 10 150 10 C200 10 250 60 240 130 C246 190 226 250 200 300 L100 300 C74 250 54 190 60 130 Z" fill="url(#hairGradBack)"/>
+
+          <!-- neck -->
+          <rect x="128" y="185" width="44" height="55" rx="16" fill="url(#faceGrad)"/>
+
+          <!-- face -->
+          <ellipse cx="150" cy="150" rx="78" ry="88" fill="url(#faceGrad)"/>
+
+          <!-- cheek glow (3D shading) -->
+          <circle cx="150" cy="175" r="70" fill="url(#cheekGlow)"/>
+
+          <!-- front hair / bangs -->
+          <path d="M72 120 C68 60 108 22 150 22 C192 22 232 60 228 120 C210 95 190 118 176 100 C168 130 150 108 140 128 C126 100 108 128 96 108 C88 126 80 118 72 120 Z" fill="url(#hairGrad)"/>
+          <path d="M40 150 C30 95 55 45 92 30 C68 60 62 100 70 140 C60 150 48 148 40 150 Z" fill="url(#hairGrad)" opacity="0.95"/>
+          <path d="M260 150 C270 95 245 45 208 30 C232 60 238 100 230 140 C240 150 252 148 260 150 Z" fill="url(#hairGrad)" opacity="0.95"/>
+
+          <!-- eyes -->
+          <ellipse cx="118" cy="158" rx="17" ry="22" fill="#fff"/>
+          <ellipse cx="182" cy="158" rx="17" ry="22" fill="#fff"/>
+          <ellipse cx="120" cy="163" rx="11" ry="15" fill="url(#eyeGrad)"/>
+          <ellipse cx="184" cy="163" rx="11" ry="15" fill="url(#eyeGrad)"/>
+          <circle cx="124" cy="156" r="3.5" fill="#fff"/>
+          <circle cx="188" cy="156" r="3.5" fill="#fff"/>
+
+          <!-- brows -->
+          <path d="M102 130 Q118 122 134 130" stroke="#18011F" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <path d="M166 130 Q182 122 198 130" stroke="#18011F" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+          <!-- nose + mouth -->
+          <path d="M150 168 L146 188 Q150 192 154 188" stroke="#8FA3AE" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M136 204 Q150 214 164 204" stroke="#18011F" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="hero-bottom">
+      <p class="hero-tagline fade" style="transition-delay:.2s">curating premium anime figures &amp; collectibles for fans who want it done right</p>
+      <a href="#offer" class="btn-contact fade" style="transition-delay:.35s">Shop Now</a>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <section class="marquee-section">
+    <div class="m-row" id="row1"></div>
+    <div class="m-row" id="row2"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="deco tl fade left" style="transition-delay:.1s">
+      <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="#D7E2EA" stroke-width="4" opacity=".6"/><path d="M50 12 L58 40 L86 44 L64 62 L70 90 L50 74 L30 90 L36 62 L14 44 L42 40 Z" fill="#D7E2EA" opacity=".85"/></svg>
+    </div>
+    <div class="deco bl fade left" style="transition-delay:.25s">
+      <svg viewBox="0 0 100 100"><rect x="20" y="35" width="60" height="45" rx="10" fill="#B600A8"/><rect x="42" y="20" width="16" height="30" fill="#7621B0"/></svg>
+    </div>
+    <div class="deco tr fade right" style="transition-delay:.15s">
+      <svg viewBox="0 0 100 100"><circle cx="35" cy="40" r="18" fill="#D7E2EA" opacity=".85"/><circle cx="60" cy="60" r="24" fill="#BBCCD7" opacity=".6"/></svg>
+    </div>
+    <div class="deco br fade right" style="transition-delay:.3s">
+      <svg viewBox="0 0 100 100"><path d="M20 80 L50 20 L80 80 Z" fill="none" stroke="#D7E2EA" stroke-width="4" opacity=".7"/><circle cx="50" cy="55" r="10" fill="#D7E2EA" opacity=".85"/></svg>
+    </div>
+
+    <h2 class="about-heading hero-heading fade up">About Toynexx</h2>
+
+    <div class="about-textblock">
+      <p class="about-p" id="aboutText"></p>
+      <a href="#offer" class="btn-contact fade up">Shop Now</a>
+    </div>
+  </section>
+
+  <!-- SERVICES / OFFER -->
+  <section class="services" id="offer">
+    <h2 class="services-heading">What We Offer</h2>
+    <div class="service-list" id="serviceList"></div>
+  </section>
+
+  <!-- COLLECTIONS -->
+  <section class="collections" id="collections">
+    <h2 class="collections-heading hero-heading">Collections</h2>
+    <div class="stack" id="stack"></div>
+  </section>
+
+  <footer>toynexx &middot; anime toys, curated with love</footer>
+</div>
+
+<script>
+/* ---------------- data ---------------- */
+const services = [
+  ["01","Curated Figures","Hand-picked premium figures and statues from top makers, screened for accuracy, quality, and finish."],
+  ["02","Limited Drops","Early access to limited-run and exclusive releases before they sell out anywhere else."],
+  ["03","Custom Orders","Pre-orders and special requests for hard-to-find pieces, sourced directly from trusted partners."],
+  ["04","Safe Shipping","Reinforced packaging and tracked delivery, so every figure arrives exactly the way it left the box."],
+  ["05","Fan Community","A growing circle of collectors trading tips, restock alerts, and first looks at new arrivals."]
+];
+
+const collections = [
+  ["01","Best Seller","Shonen Legends"],
+  ["02","New Arrival","Mecha Universe"],
+  ["03","Limited Drop","Chibi Series"]
+];
+
+const aboutParagraph = "toynexx started as a small passion project for anime fans who wanted more than mass-produced merch. today we source, curate, and ship premium figures and collectibles worldwide, obsessing over detail, packaging, and every unboxing moment. let's find your next favorite piece.";
+
+const iconSet = [
+  '<circle cx="12" cy="12" r="9"/>',
+  '<path d="M12 2 L15 9 L22 10 L17 15 L18 22 L12 18.5 L6 22 L7 15 L2 10 L9 9 Z"/>',
+  '<rect x="4" y="4" width="16" height="16" rx="3"/>',
+  '<path d="M12 21s-8-4.5-8-11a5 5 0 0 1 8-4 5 5 0 0 1 8 4c0 6.5-8 11-8 11z"/>',
+  '<path d="M13 2 3 14h7l-1 8 11-14h-7l1-6z"/>'
+];
+const tileGrads = [
+  'linear-gradient(135deg,#18011F,#B600A8)',
+  'linear-gradient(135deg,#7621B0,#BE4C00)',
+  'linear-gradient(135deg,#B600A8,#7621B0)',
+  'linear-gradient(135deg,#0C0C0C,#3a1030)',
+  'linear-gradient(135deg,#BE4C00,#18011F)'
+];
+
+function makeTile(i){
+  const grad = tileGrads[i % tileGrads.length];
+  const icon = iconSet[i % iconSet.length];
+  const div = document.createElement('div');
+  div.className='m-tile';
+  div.style.background = grad;
+  div.innerHTML = `<svg viewBox="0 0 24 24" fill="#D7E2EA">${icon}</svg>`;
+  return div;
+}
+
+const row1 = document.getElementById('row1');
+const row2 = document.getElementById('row2');
+for(let i=0;i<33;i++) row1.appendChild(makeTile(i));
+for(let i=0;i<30;i++) row2.appendChild(makeTile(i+5));
+
+/* services list */
+const serviceList = document.getElementById('serviceList');
+services.forEach(([num,name,desc],i)=>{
+  const el = document.createElement('div');
+  el.className='service-item fade up';
+  el.style.transitionDelay = (i*0.1)+'s';
+  el.innerHTML = `<div class="service-num">${num}</div>
+    <div><div class="service-name">${name}</div><div class="service-desc">${desc}</div></div>`;
+  serviceList.appendChild(el);
+});
+
+/* collection cards */
+const stack = document.getElementById('stack');
+const cardEls = [];
+collections.forEach(([num,cat,name],i)=>{
+  const sticky = document.createElement('div');
+  sticky.className='card-sticky';
+  sticky.style.top = (72 + i*28)+'px';
+  const card = document.createElement('div');
+  card.className='card';
+  card.innerHTML = `
+    <div class="card-top">
+      <div class="card-num">${num}</div>
+      <div class="card-meta"><div class="card-cat">${cat}</div><div class="card-name">${name}</div></div>
+      <a href="#" class="btn-ghost">Shop Collection</a>
+    </div>
+    <div class="card-grid">
+      <div class="card-col1">
+        <div class="ph-img ph1" style="background:linear-gradient(135deg,#18011F,#7621B0)"><svg viewBox="0 0 24 24" width="30%" fill="#D7E2EA">${iconSet[i%iconSet.length]}</svg></div>
+        <div class="ph-img ph2" style="background:linear-gradient(135deg,#7621B0,#BE4C00)"><svg viewBox="0 0 24 24" width="30%" fill="#D7E2EA">${iconSet[(i+1)%iconSet.length]}</svg></div>
+      </div>
+      <div class="card-col2">
+        <div class="ph-img ph3" style="background:linear-gradient(135deg,#B600A8,#18011F)"><svg viewBox="0 0 24 24" width="22%" fill="#D7E2EA">${iconSet[(i+2)%iconSet.length]}</svg></div>
+      </div>
+    </div>`;
+  sticky.appendChild(card);
+  stack.appendChild(sticky);
+  cardEls.push(card);
+});
+
+/* about paragraph char split */
+const aboutTextEl = document.getElementById('aboutText');
+[...aboutParagraph].forEach(ch=>{
+  const span = document.createElement('span');
+  span.textContent = ch;
+  aboutTextEl.appendChild(span);
+});
+const charSpans = aboutTextEl.querySelectorAll('span');
+
+/* ---------------- animation on load ---------------- */
+requestAnimationFrame(()=>{
+  document.querySelectorAll('nav, .hero-tagline, .btn-contact, .hero-portrait-holder').forEach((el,i)=>{
+    el.classList.add('fade');
+  });
+  setTimeout(()=>{
+    document.querySelectorAll('#heroHeadingWrap, .hero-portrait-holder, .hero-tagline, .hero-bottom .btn-contact').forEach(el=>el.classList.add('in'));
+  }, 50);
+});
+
+/* ---------------- scroll reveal (about deco, services, cards) ---------------- */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+}, {threshold:0.15});
+document.querySelectorAll('.fade').forEach(el=>io.observe(el));
+
+/* ---------------- marquee scroll-linked movement ---------------- */
+const marqueeSection = document.querySelector('.marquee-section');
+function updateMarquee(){
+  const rect = marqueeSection.getBoundingClientRect();
+  const sectionTop = rect.top + window.scrollY;
+  const offset = (window.scrollY - sectionTop + window.innerHeight) * 0.3;
+  row1.style.transform = `translateX(${offset - 400}px)`;
+  row2.style.transform = `translateX(${-(offset - 400)}px)`;
+}
+
+/* ---------------- about char reveal ---------------- */
+function updateAboutText(){
+  const rect = aboutTextEl.getBoundingClientRect();
+  const vh = window.innerHeight;
+  const start = vh*0.8, end = vh*0.2;
+  let progress = (start - rect.top) / (start - end);
+  progress = Math.max(0, Math.min(1, progress));
+  const total = charSpans.length;
+  charSpans.forEach((span,i)=>{
+    const charProgress = Math.max(0, Math.min(1, (progress*total - i)));
+    span.style.opacity = 0.2 + 0.8*charProgress;
+  });
+}
+
+/* ---------------- card stacking scale ---------------- */
+function updateCards(){
+  const total = cardEls.length;
+  cardEls.forEach((card,i)=>{
+    const sticky = card.parentElement;
+    const rect = sticky.getBoundingClientRect();
+    const progress = Math.max(0, Math.min(1, 1 - rect.top / window.innerHeight));
+    const targetScale = 1 - (total - 1 - i) * 0.04;
+    const scale = 1 - (1-targetScale)*progress;
+    card.style.transform = `scale(${Math.max(targetScale, scale)})`;
+  });
+}
+
+let ticking=false;
+window.addEventListener('scroll', ()=>{
+  if(!ticking){
+    requestAnimationFrame(()=>{
+      updateMarquee(); updateAboutText(); updateCards();
+      ticking=false;
+    });
+    ticking=true;
+  }
+},{passive:true});
+updateMarquee(); updateAboutText(); updateCards();
+
+/* ---------------- magnet hero portrait ---------------- */
+const portrait = document.getElementById('portrait');
+const heroSection = document.querySelector('.hero');
+heroSection.addEventListener('mousemove', (e)=>{
+  const rect = portrait.getBoundingClientRect();
+  const cx = rect.left+rect.width/2, cy = rect.top+rect.height/2;
+  const dx = e.clientX-cx, dy = e.clientY-cy;
+  const dist = Math.sqrt(dx*dx+dy*dy);
+  const padding = 150;
+  if(dist < rect.width/2 + padding){
+    portrait.style.transition='transform 0.3s ease-out';
+    portrait.style.transform = `translate(-50%,-50%) translate3d(${dx/6}px, ${dy/6}px, 0)`;
+  } else {
+    portrait.style.transition='transform 0.6s ease-in-out';
+    portrait.style.transform = `translate(-50%,-50%) translate3d(0,0,0)`;
+  }
+});
+heroSection.addEventListener('mouseleave', ()=>{
+  portrait.style.transition='transform 0.6s ease-in-out';
+  portrait.style.transform = `translate(-50%,-50%) translate3d(0,0,0)`;
+});
+</script>
+</body>
+</html>
