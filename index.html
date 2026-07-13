@@ -231,10 +231,11 @@ bottom:2%;
 }
 
 .goku{
-
-right:6%;
-top:15%;
-
+    position:absolute;
+    right:80px;
+    top:100px;
+    width:380px;
+    z-index:100;
 }
 
 .luffy{
@@ -299,18 +300,8 @@ transform:translateY(0);
         <h1 class="hero-heading hero-heading-el">Toynexx</h1>
       </div>
 
-   <div class="hero-characters">
-
-    <img src="images/batman.png" class="char batman">
-    <img src="images/ironman.png" class="char ironman">
-    <img src="images/captain.png" class="char captain">
-    <img src="images/superman.png" class="char superman">
-
-    <img src="images/goku.png" class="char goku">
-    <img src="images/luffy.png" class="char luffy">
-    <img src="images/tanjiro.png" class="char tanjiro">
-    <img src="images/titan.png" class="char titan">
-
+<div class="hero-characters">
+    <img src="goku.png" class="char goku" alt="Goku">
 </div>
 
       </div>
@@ -469,7 +460,7 @@ requestAnimationFrame(()=>{
     el.classList.add('fade');
   });
   setTimeout(()=>{
-    document.querySelectorAll('#heroHeadingWrap, .hero-portrait-holder, .hero-tagline, .hero-bottom .btn-contact').forEach(el=>el.classList.add('in'));
+    document.querySelectorAll('#heroHeadingWrap, .hero-characters, .hero-tagline, .hero-bottom .btn-contact').forEach(el=>el.classList.add('in'));
   }, 50);
 });
 
