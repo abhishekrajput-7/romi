@@ -230,35 +230,16 @@ bottom:2%;
 
 }
 
-.goku{
+.goku-video{
     position:absolute;
-    right:80px;
-    top:120px;
-    width:320px;
-    z-index:20;
-
-    filter:
-        drop-shadow(0 25px 45px rgba(0,0,0,.7))
-        drop-shadow(0 0 30px rgba(182,0,168,.5));
-
+    right:60px;
+    top:100px;
+    width:420px;
+    z-index:10;
+    object-fit:contain;
+    pointer-events:none;
+    filter:drop-shadow(0 0 35px rgba(182,0,168,.6));
     animation:float 4s ease-in-out infinite;
-    transition:transform .25s ease;
-}
-
-.goku:hover{
-    transform:scale(1.08) rotate(-3deg);
-}
-
-@keyframes float{
-    0%{
-        transform:translateY(0px);
-    }
-    50%{
-        transform:translateY(-18px);
-    }
-    100%{
-        transform:translateY(0px);
-    }
 }
 
 .luffy{
@@ -324,7 +305,9 @@ transform:translateY(0);
       </div>
 
 <div class="hero-characters">
-    <img src="goku.png" class="char goku" alt="Goku">
+  <video class="goku-video" autoplay muted loop playsinline>
+    <source src="goku.mp4" type="video/mp4">
+  </video>
 </div>
 
       </div>
